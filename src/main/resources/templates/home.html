@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>My Online Store</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/home.css}">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Welcome to My Online Store</h1>
+        <nav>
+            <form action="#" th:action="@{/logout}" method="post">
+                <a th:href="@{/home}">Home</a>
+                <a th:href="@{/card}">Card</a>
+                <a th:href="@{/orders}">Orders</a>
+                <input type="submit" value="logout">
+            </form>
+        </nav>
+    </header>
+    <section th:if="${product!=null}">
+        <h1></h1>
+        <h2><%= product.getName()%></h2>
+        <p><strong>Code:</strong> <%= product.getCode()%></p>
+        <p><strong>Provider:</strong> <span th:text="${product.p}"></span></p>
+        <p><strong>Description:</strong><span th:text="${product.description}"></span></p>
+        <p><strong>Category:</strong> <span th:text="${product.category}"></span></p>
+        <p><strong>Photo:</strong> <img th:src="/images/${product.photo}" alt="Product Photo"></p>
+    </section>
+    <section th:if="${product==null}">
+        <h2>Search for Products</h2>
+        <form th:action="@{/search}" method="post">
+            <input type="text" name="keyword" placeholder="Enter keyword">
+            <input type="submit" name="accion" value="Search">
+        </form>
+    </section>
+    <section th:if="${product==null&&products.isEmpty()==true}">
+        <h1>Sorry No Products </h1>
+    </section>
+    <section th:if="${product==null&&products.isEmpty()==false}">
+        <p>Products</p>
+        <table border="1" margin="1" padding="1">
+            <tbody>
+            <tr>
+                <th>Code:</th>
+                <th>Name:</th>
+                <th>Description</th>
+                <th>Show details</th>
+            </tr>
+            <tr th:each="product :${products}">
+                <th th:text="${product.code}"></th>
+                <th th:text="${product.name}"></th>
+                <th th:text="${product.description}"></th>
+                <td>
+                    <form th:action="@{/productDetails}" method="post">
+                        <input type="hidden" name="idProduct" th:value="${product.id}">
+                        <input type="submit" name="action" value="Details"/>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+    <section th:if="${providers!=null}">
+        <p>Providers</p>
+        <table border="1" margin="1" padding="1">
+            <body>
+            <tr>
+                <th>Code:</th>
+                <th>Name:</th>
+                <th>Rating</th>
+                <th>Min Range</th>
+                <th>Max Range</th>
+                <th>Price per unit</th>
+                <th>Show details</th>
+            </tr>
+            <tr th:if="${providers.isEmpty()}">
+                <td colspan="4">No providers found.</td>
+            </tr>
+            <tr th:each="provider :${providers}">
+                <th th:text="${provider.code}"></th>
+                <th th:text="${provider.name}"></th>
+                <th th:text="${provider.rating}"></th>
+                <th th:text="${provider.getShippingPolicy().minRange}"></th>
+                <th th:text="${provider.getShippingPolicy().maxRange}"></th>
+                <th th:text="${provider.getShippingPolicy().price}"></th>
+                <td>
+                    <form action="controller" method="post">
+                        <input type="hidden" name="providerId" th:value="${provider.id}">
+                        <input type="submit" name="accion" value="ProviderDetails"/>
+                    </form>
+                </td>
+            </tr>
+            </body>
+        </table>
+    </section>
+</div>
+</body>
+</html>

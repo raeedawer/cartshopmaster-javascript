@@ -1,0 +1,73 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 29-jun-2023, 23:11:37
+    Author     : Garrido
+*/
+body {
+    background-color: #f0f6ff; /* Azul claro */
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+  color: #0080ff;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+
+header {
+    background-color: #87ceeb; /* Azul claro */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px; /* Agrega un margen inferior para separarlo del contenido */
+}
+
+header h1 {
+    color: #ffffff; /* Blanco */
+    text-align: center;
+}
+
+nav {
+    background-color: #87ceeb; /* Azul claro */
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 20px; /* Agrega un margen inferior para separarlo del contenido */
+}
+
+nav input {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: #000080; /* Azul marino */
+    text-decoration: none;
+    margin-right: 10px;
+    margin-left: 20px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+nav input[type="submit"]:hover {
+    text-decoration: underline;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
