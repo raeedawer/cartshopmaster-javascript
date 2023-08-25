@@ -17,14 +17,7 @@
             </form>
         </nav>
     </header>
-    <section th:if="${product!=null}">
-        <h1></h1>
-        <h2><span th:text="${product.name}"></span></h2>
-        <p><strong>Code:</strong><span th:text="${product.code}"></span> </p>
-        <p><strong>Description:</strong><span th:text="${product.description}"></span></p>
-        <p><strong>Category:</strong> <span th:text="${product.category}"></span></p>
-        <p><strong>Photo:</strong> <img th:src="/images/${product.photo}" alt="Product Photo"></p>
-    </section>
+    <p th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"></p>
     <section th:if="${product==null}">
         <h2>Search for Products</h2>
         <form th:action="@{/search}" method="post">
@@ -32,33 +25,113 @@
             <input type="submit" name="accion" value="Search">
         </form>
     </section>
-    <section th:if="${product==null&&products.isEmpty()==true}">
-        <h1>Sorry No Products </h1>
+    <section th:if="${orders!=null}">
+
+        <div>
+            <h1>Listado de Órdenes de Compra</h1>
+
+            <table border="1" margin="1" padding="1">
+                <tr th:if="${orders.isEmpty()}">
+                    <td colspan="4">No orders found.</td>
+                </tr>
+                <tr>
+                    <th>Order ID:</th>
+                    <th>Provider Code</th>
+                    <th>Adress:</th>
+                    <th>Order Date:</th>
+                    <th>Total amount</th>
+                    <th>Shipping amount</th>
+                </tr>
+                <tr th:each="order :${orders}">
+
+                    <td th:text="${order.id}" ></td>
+                    <td th:text="${order.provider.code}"></td>
+                    <td th:text="${order.shippingAddress}"></td>
+                    <td th:text="${order.shippingDate}"></td>
+                    <td th:text="${order.totalAmount}"></td>
+                    <td th:text="${order.shippingAmount}"></td>
+
+                </tr>
+
+
+
+            </table>
+
+        </div>
     </section>
-    <section th:if="${product==null&&products.isEmpty()==false}">
-        <p>Products</p>
-        <table border="1" margin="1" padding="1">
-            <tbody>
-            <tr>
-                <th>Code:</th>
-                <th>Name:</th>
-                <th>Description</th>
-                <th>Show details</th>
-            </tr>
-            <tr th:each="product :${products}">
-                <th th:text="${product.code}"></th>
-                <th th:text="${product.name}"></th>
-                <th th:text="${product.description}"></th>
-                <td>
-                    <form th:action="@{/productDetails}" method="post">
-                        <input type="hidden" name="idProduct" th:value="${product.id}">
-                        <input type="submit" name="action" value="Details"/>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+
+    <section th:if="${cardItems!=null}" >
+
+        <div class="container" >
+            <h1>Cart</h1>
+            <table>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+                <tr th:if="${cardItems.isEmpty()}">
+                    <td colspan="4">Your cart is empty</td>
+                </tr>
+                <tr th:each="cardItem :${cardItems}">
+                    <td th:text="${cardItem.product.name}"><%= item.getProduct().getName()%></td>
+                    <td th:text="${cardItem.quantity}"><%= item.getQuantity() %></td>
+                    <td th:text="${cardItem.product.precio}"><%= item.getProduct().getPrecio() %></td>
+                    <td th:text="${cardItem.product.precio*cardItem.quantity}"></td>
+                    <td>
+                        <form th:action="@{/removeItem}" method="post">
+                            <input type="hidden" name="cardItems" th:value="${cardItems}">
+                            <input type="hidden" name="productId" th:value="${cardItem.product.id}"/>
+                            <input type="submit" name="accion" value="Remove Item"/>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+            <form th:action="@{/addOrder}" method="post">
+                <input type="submit" value="Add Order">
+            </form>
+        </div>
+
+
+
     </section>
+    <section th:if="${product!=null}">
+        <h1></h1>
+        <h2><span th:text="${product.name}"></span></h2>
+        <p><strong>Code: </strong><span th:text="${product.code}"></span></p>
+        <p><strong>Description: </strong><span th:text="${product.description}"></span></p>
+        <p><strong>Category: </strong> <span th:text="${product.category}"></span></p>
+        <p><strong>Photo</strong> <img th:src="@{${'/images/'+product.photo}}" alt="Product Photo"></p>
+    </section>
+
+    <div th:if="${product==null}">
+        <section th:if="${product==null&&products!=null}">
+            <p>Products</p>
+            <table border="1" margin="1" padding="1">
+                <tbody>
+                <tr>
+                    <th>Code:</th>
+                    <th>Name:</th>
+                    <th>Description</th>
+                    <th>Show details</th>
+                </tr>
+                <tr th:each="product :${products}">
+                    <th th:text="${product.code}"></th>
+                    <th th:text="${product.name}"></th>
+                    <th th:text="${product.description}"></th>
+                    <td>
+                        <form th:action="@{/productDetails}" method="post">
+                            <input type="hidden" name="productId" th:value="${product.id}">
+                            <input type="submit" name="action" value="Details"/>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
     <section th:if="${providers!=null}">
         <p>Providers</p>
         <table border="1" margin="1" padding="1">
@@ -81,11 +154,13 @@
                 <th th:text="${provider.rating}"></th>
                 <th th:text="${provider.getShippingPolicy().minRange}"></th>
                 <th th:text="${provider.getShippingPolicy().maxRange}"></th>
-                <th th:text="${provider.getShippingPolicy().price}"></th>
+
+                <th th:if="${product!=null}" th:text="${product.precio}"></th>
                 <td>
-                    <form action="controller" method="post">
-                        <input type="hidden" name="providerId" th:value="${provider.id}">
-                        <input type="submit" name="accion" value="ProviderDetails"/>
+                    <form th:action="@{/addCardItem}" method="post">
+                        <input type="hidden" name="productId" th:value="${product.id}"/>
+                        <input type="number" name="quantity" value="1" min="1" max="99"/>
+                        <input type="submit" name="accion" value="AddToCart"/>
                     </form>
                 </td>
             </tr>

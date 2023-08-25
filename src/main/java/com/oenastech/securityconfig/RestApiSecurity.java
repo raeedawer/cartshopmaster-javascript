@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 
 import javax.sql.DataSource;
 
@@ -16,7 +17,7 @@ import javax.sql.DataSource;
 public class RestApiSecurity {
 
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
     @Autowired
     public RestApiSecurity(DataSource dataSource) {
         this.dataSource=dataSource;
@@ -31,9 +32,10 @@ public class RestApiSecurity {
 
     @Bean
     public SecurityFilterChain filterChain( HttpSecurity  chain) throws Exception {
-
+        HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+        requestCache.setMatchingRequestParameterName(null);
         chain.authorizeHttpRequests( auth -> auth
-                        .requestMatchers("/styles/**","/register")
+                        .requestMatchers("/styles/**","/register","addClient")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
@@ -46,8 +48,10 @@ public class RestApiSecurity {
                         .logoutUrl("/logout")
                         .permitAll())
                 .authenticationProvider(provider())
-                .exceptionHandling(exception -> exception.accessDeniedPage("/accessDenied")
-                );
+                .exceptionHandling(exception -> exception
+                        .accessDeniedPage("/accessDenied")
+                ).requestCache(cache -> cache
+                        .requestCache(requestCache));
         return chain.build();
 
 
