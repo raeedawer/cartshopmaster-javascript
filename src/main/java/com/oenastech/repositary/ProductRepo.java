@@ -13,8 +13,6 @@ import java.util.Set;
 public interface ProductRepo extends JpaRepository<Product,Long> {
     @Query("SELECT p from Product p where p.name like %?1%  or p.code like %?1% ")
     List<Product> findByName(String name);
-
-
     @Query("select p from Provider p join p.products c where c.id=?1 ")
     List<Provider> findProviderByProductId(Long id);
 

@@ -2,14 +2,25 @@ package com.oenastech.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * <h2>An online store project <h2/>
+ * <p> That displays products with different providers,
+ *with a shopping cart and an order page.<p/>
+ *
+ *
+ *
+ *
+ * @author Raeed Awer
+ *
+ *@since 1.1
+ */
+@Getter
+@Setter
 @Entity
 @Table(name = "provider")
 @NoArgsConstructor
@@ -29,67 +40,12 @@ public class Provider {
     private String code;
     private String name;
     private Integer rating;
-
     @OneToMany(mappedBy = "provider")
     private Set<PurchaseOrder> purchaseOrders ;
-
     @ManyToMany(mappedBy = "providers")
     private Set<Product> products ;
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
-	public ShippingPolicy getShippingPolicy() {
-		return shippingPolicy;
-	}
-
-	public void setShippingPolicy(ShippingPolicy shippingPolicy) {
-		this.shippingPolicy = shippingPolicy;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Integer getRating() {
-		return rating;
-	}
-
-	public void setRating(Integer rating) {
-		this.rating = rating;
-	}
-
-	public Set<PurchaseOrder> getPurchaseOrders() {
-		return purchaseOrders;
-	}
-
-	public void setPurchaseOrders(Set<PurchaseOrder> purchaseOrders) {
-		this.purchaseOrders = purchaseOrders;
-	}
-
-	public Set<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(Set<Product> products) {
-		this.products = products;
-	}
     
 }

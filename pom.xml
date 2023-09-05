@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.oenastech</groupId>
-    <artifactId>cartshop</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>cartshop</name>
-    <description>cartshop</description>
+    <artifactId>cartshop_masterjavascript</artifactId>
+    <version>0.0.2</version>
+    <name>cartshopmaster-javascript</name>
+    <description>cartshop-javascript</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -67,6 +67,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+        <groupId>org.thymeleaf.extras</groupId>
+        <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+        <version>3.1.2.RELEASE</version>
+    </dependency>
+
     </dependencies>
 
     <build>

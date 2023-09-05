@@ -2,14 +2,24 @@ package com.oenastech.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+/**
+ * <h2>An online store project <h2/>
+ * <p> That displays products with different providers,
+ *with a shopping cart and an order page.<p/>
+ *
+ *
+ *
+ *
+ * @author Raeed Awer
+ *
+ *@since 1.1
+ */
+@Setter
+@Getter
 @Entity
-@Data
-
 @NoArgsConstructor
 @AllArgsConstructor
 public class CardItem {
@@ -20,54 +30,34 @@ public class CardItem {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
+
+	@ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+
+	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
     private PurchaseOrder orderId;
 
-    @Column(name = "quantity")
+
+	@Column(name = "quantity")
     private Integer quantity;
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @Column(name = "provider_id")
+    private Long provider;
 
-	public Product getProduct() {
-		return product;
-	}
+    @Column(name = "client_id")
+    private Long client;
 
-	public void setProduct(Product product) {
-		this.product = product;
-	}
-
-	public PurchaseOrder getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(PurchaseOrder orderId) {
-		this.orderId = orderId;
-	}
-
-	public Integer getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
-	}
+    @Column(name = "item_price")
+    private Float price;
 
 
-
-
-
-
+    @Column(name = "total_price")
+    private Float totalPrice;
 
 
 }
+

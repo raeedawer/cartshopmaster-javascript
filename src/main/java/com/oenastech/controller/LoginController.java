@@ -1,11 +1,21 @@
 package com.oenastech.controller;
 
+import com.oenastech.dto.ClientDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
+/**
+ * <h2>An online store project <h2/>
+ * <p> That displays products with different providers,
+ *with a shopping cart and an order page.<p/>
+ *
+ *
+ *
+ *
+ * @author Raeed Awer
+ *
+ *@since 1.1
+ */
 @Controller
 public class LoginController {
 
@@ -15,11 +25,7 @@ public class LoginController {
 
         return "login";
     }
-    @ExceptionHandler(Exception.class)
-    public String handleException(Exception ex, Model model) {
-        model.addAttribute("errorMessage", "An error occurred. Please try again.");
-        return "redirect:/home"; // Redirect to the home page
-    }
+
     @GetMapping("/accessDenied")
     public String accessDenied(){
 
@@ -29,7 +35,10 @@ public class LoginController {
 
 
     @GetMapping("/register")
-    public String register(){
+    public String register(Model model){
+
+        ClientDto client=new ClientDto();
+        model.addAttribute("client",client);
 
 
         return "register";
